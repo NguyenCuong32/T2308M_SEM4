@@ -33,11 +33,17 @@
             <th>Number</th>
            </thead>
            <tbody>
-            <%
-                List<ClassRoom> classrooms = (List<ClassRoom>) request.getAttribute("classRoomList");
-                if (classrooms != null) {
-                    for (ClassRoom classRoom: classrooms){
-
+           <%
+               List<ClassRoom> classRooms = (List<ClassRoom>) request.getAttribute("classRoomList");
+               if (classRooms != null) {
+                   for (ClassRoom classRoom : classRooms) {
+                %>
+            <tr>
+                <td <%= classRoom.getId() %> </td>
+                <td> <%= classRoom.getClass_name() %></td>
+                <td><%= classRoom.getNumber_member()%></td>
+            </tr>
+                  <%
                     }
                 }
             %>
