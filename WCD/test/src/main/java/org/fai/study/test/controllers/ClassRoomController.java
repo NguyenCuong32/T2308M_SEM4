@@ -26,15 +26,29 @@ public class ClassRoomController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        super.doGet(req, resp);
         System.out.println("ClassRoom doGet");
-        var classRooms = entityManager.createStoredProcedureQuery("GetClassRoom",ClassRoom.class).getResultList();
-        req.setAttribute("classRoomList", classRooms);
-        req.getRequestDispatcher("/views/classroom.jsp").forward(req, resp);
+        var method = req.getParameter("_method");
+        if (method != null&&method.toUpperCase()=="PUT"){
+            System.out.println("Update ClassRoom");
+        }
+        else {
+            var classRooms = entityManager.createStoredProcedureQuery("GetClassRoom", ClassRoom.class).getResultList();
+            req.setAttribute("classRoomList", classRooms);
+            req.getRequestDispatcher("/views/classroom.jsp").forward(req, resp);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
        try{
-           super.doPost(req, resp);
+           var method = req.getParameter("_method");
+           if (method != null&&method.toUpperCase()=="PUT"){
+               System.out.println("Update ClassRoom");
+           }
+           else if (method != null&&method.toUpperCase()=="DELETE"){
+               System.out.println("Delete ClassRoom");
+           }
+           else {
            System.out.println("ClassRoom doPost");
            var class_name = req.getParameter("class_name");
            var id_class = Integer.valueOf(req.getParameter("id_class"));
@@ -55,6 +69,7 @@ public class ClassRoomController extends HttpServlet {
            query.execute();
            entityManager.getTransaction().commit();
            resp.sendRedirect("./classroom");
+       }
        }
        catch (Exception e){
            e.printStackTrace();
