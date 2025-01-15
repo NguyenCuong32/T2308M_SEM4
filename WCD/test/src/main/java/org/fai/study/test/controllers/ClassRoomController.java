@@ -1,8 +1,6 @@
 package org.fai.study.test.controllers;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -35,6 +33,32 @@ public class ClassRoomController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+       try{
+           super.doPost(req, resp);
+           System.out.println("ClassRoom doPost");
+           var class_name = req.getParameter("class_name");
+           var id_class = Integer.valueOf(req.getParameter("id_class"));
+           var number = Integer.valueOf(req.getParameter("number_member"));
+
+           System.out.println(class_name + " " + id_class + " " + number);
+
+           entityManager.getTransaction().begin();
+           StoredProcedureQuery query = entityManager.createStoredProcedureQuery("INSERT_CLASSROOM");
+           query.registerStoredProcedureParameter(1,Integer.class, ParameterMode.IN);
+           query.registerStoredProcedureParameter(2,String.class, ParameterMode.IN);
+           query.registerStoredProcedureParameter(3,Integer.class, ParameterMode.IN);
+
+
+           query.setParameter(1,id_class);
+           query.setParameter(2,class_name);
+           query.setParameter(3,number);
+           query.execute();
+           entityManager.getTransaction().commit();
+           resp.sendRedirect("./classroom");
+       }
+       catch (Exception e){
+           e.printStackTrace();
+       }
+
     }
 }
