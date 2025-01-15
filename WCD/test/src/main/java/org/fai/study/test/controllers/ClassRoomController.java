@@ -29,6 +29,7 @@ public class ClassRoomController extends HttpServlet {
         var method = req.getParameter("_method");
         if (method != null&&method.toUpperCase()=="PUT"){
             System.out.println("Update ClassRoom");
+            doPut(req, resp);
         }
         else {
             var classRooms = entityManager.createStoredProcedureQuery("GetClassRoom", ClassRoom.class).getResultList();
@@ -44,9 +45,11 @@ public class ClassRoomController extends HttpServlet {
            var method = req.getParameter("_method");
            if (method != null&&method.toUpperCase()=="PUT"){
                System.out.println("Update ClassRoom");
+               doPut(req, resp);
            }
            else if (method != null&&method.toUpperCase()=="DELETE"){
                System.out.println("Delete ClassRoom");
+               doDelete(req, resp);
            }
            else {
            System.out.println("ClassRoom doPost");
@@ -75,5 +78,22 @@ public class ClassRoomController extends HttpServlet {
            e.printStackTrace();
        }
 
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPut(req, resp);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doDelete(req, resp);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        entityManager.close();
+        entityManagerFactory.close();
     }
 }
