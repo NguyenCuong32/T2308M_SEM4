@@ -16,7 +16,7 @@ public class ClassRoomController {
     public ClassRoomController(IClassRoomService classRoomService) {
         this.classRoomService = classRoomService;
     }
-    @GetMapping("/index")
+   @GetMapping("/index")
     String Index(Model model){
         var classRooms = this.classRoomService.getClassRoomDtoList();
         model.addAttribute("classRooms", classRooms);
